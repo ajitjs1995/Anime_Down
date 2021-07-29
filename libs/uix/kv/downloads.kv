@@ -1,0 +1,47 @@
+<Downloads>:
+    name: "download"
+    md_bg_color: 242/255, 244/255, 255/255, 1    
+    MDBoxLayout:
+        orientation: 'vertical'
+        spacing: dp(10)
+        # padding: dp(20)
+        MDToolbar:
+            title: "Downloads"
+            size_hint: 1,.1
+            md_bg_color: 4/255, 0/255, 177/255, 1
+            left_action_items: [["arrow-left", lambda x: app.screen_manager.change_screen("home")]]
+        
+        RecycleView:
+            id: rv
+            viewclass: "Down"
+            data: []
+            key_size: 'height'
+
+            RecycleBoxLayout:
+                padding: dp(10)
+                spacing: dp(10)
+                default_size: None, None
+                default_size_hint: 1, None
+                size_hint_y: None
+                height: self.minimum_height
+                orientation: 'vertical'
+<Down@BoxLayout>:
+    # orientation: "horizontal"
+    padding: "8dp"
+    text: ""
+    value: 2
+    MDCard:
+        orientation: "vertical"
+        padding: "8dp"
+        size_hint: None, None
+        size: "290dp", "105dp"
+        radius: 15
+        # pos_hint: {"center_x": .5, "center_y": .5}
+        # md_bg_color: 0.895,0,0,0.3
+        MDLabel:
+            text: root.text
+        MDLabel:
+            text: str(root.value) + "%"
+        MDProgressBar:
+            value: root.value
+            color: 62/255, 181/255, 27/255,1

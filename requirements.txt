@@ -1,0 +1,6 @@
+click
+comtypes
+lxml
+tqdm
+requests
+pycryptodomex

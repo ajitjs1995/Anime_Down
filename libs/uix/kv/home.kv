@@ -1,0 +1,166 @@
+
+<Home_Screen>:
+    name: "home"
+    md_bg_color: 242/255, 244/255, 255/255, 1    
+    MDBoxLayout:
+        orientation: 'vertical'
+        spacing: dp(10)
+        # padding: dp(20)
+        MDToolbar:
+            title: app.APP_NAME
+            size_hint: 1,.1
+            specific_text_color: 4/255, 0/255, 177/255, 1
+            md_bg_color: 242/255, 244/255, 255/255, 1
+            # md_bg_color: 1, 161/255, 95/255, 1    
+            right_action_items: [["progress-download", lambda x: app.screen_manager.change_screen("download")]]
+        MDTextField:
+            id: box
+            hint_text: "Search Anime"
+            mode: "rectangle"
+            color_mode: 'custom'
+            size_hint: 0.8, None
+            pos_hint: {"center_x":0.5}
+            line_color_focus: 4/255, 0/255, 177/255, 1
+            # line_color_focus: 83/255, 213/255, 167/255, 1 #green
+        MDRaisedButton:
+            text: "Search"
+            pos_hint: {"center_x":0.5}
+            text_color: 255/255, 255/255, 255/255, 1
+            # md_bg_color: 83/255, 213/255, 167/255, 1 #green
+            md_bg_color: 80/255, 193/255, 255/255, 1    
+            on_press:root.call(box.text,False,"9anime",20)
+            # on_release: root.animdl_search(box.text,False,"9anime",20)
+        RecycleView:
+            id: rv
+            viewclass: "CUST"
+            data: []
+            key_size: 'height'
+
+            RecycleBoxLayout:
+                padding: dp(10)
+                spacing: dp(10)
+                default_size: None, None
+                default_size_hint: 1, None
+                size_hint_y: None
+                height: self.minimum_height
+                orientation: 'vertical'
+<CUST@BoxLayout>:
+    orientation: "horizontal"
+    padding: "8dp"    
+    image: ""
+    text: ""
+    index:0
+    MDCard:
+        orientation: "horizontal"
+        padding: "8dp"
+        size_hint: None, None
+        size: "280dp", "105dp"
+        radius: 15
+        pos_hint: {"center_x": .5}
+        md_bg_color: 245/255, 246/255, 251/255,1
+        on_touch_down: 
+            if self.collide_point(*args[1].pos):app.screen_manager.get_screen("home").show_confirmation_dialog(root.text)
+        MDBoxLayout:
+            id: box_top
+            spacing: "20dp"
+            adaptive_height: True
+            MDBoxLayout:
+                size_hint: None, None
+                size: "85dp", "20dp"
+                # adaptive_height: True
+
+                FitImage:
+                    source: root.image
+                    # radius: 15
+                    size_hint: .3, 4.3
+                    # height: text_box.height
+
+            MDBoxLayout:
+                id: text_box
+                orientation: "vertical"
+                # adaptive_height: True
+                spacing: "10dp"
+                padding: 0, "10dp", "10dp", "10dp"
+
+                MDLabel:
+                    text: root.text
+                    theme_text_color: "Primary"
+                    # font_style: "H6"
+                    bold: True
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                MDLabel:
+                    text: "Episode 983"
+                    theme_text_color: "Custom"
+                    text_color: 83/255, 213/255, 167/255, 1
+                    # font_style: "H6"
+                    # bold: True
+                    size_hint_y: None
+                    height: self.texture_size[1]
+
+<Check@MDCheckbox>:
+    group: 'group'
+    size_hint: None, None
+    size: dp(48), dp(48)
+    # md_bg_color: 0.899, 0, 0, 1
+    selected_color: 4/255, 0/255, 177/255, 1
+<Content>
+    orientation: "vertical"
+    # padding: "18dp"
+    spacing: "12dp"
+    size_hint_y: None
+    height: "170dp"
+    BoxLayout:
+        orientation: "horizontal"
+        Check:
+            id: all
+            active: False
+            pos_hint: {'center_x': .4, 'center_y': .5}
+        MDLabel:
+            text: "ALL"
+            font_style: "Caption"   
+        Check:
+            id: single
+            active: False
+            pos_hint: {'center_x': .4, 'center_y': .5}
+        MDLabel:
+            text: "Single" 
+            font_style: "Caption"   
+        Check:
+            id: multi
+            active: True
+            pos_hint: {'center_x': .4, 'center_y': .5}
+        MDLabel:
+            text: "Multi"
+            font_style: "Caption"   
+    MDTextField:
+        id: box1
+        hint_text: "Start"
+        mode: "rectangle"
+        color_mode: 'custom'
+        line_color_focus: 254/255, 190/255, 80/255, 1
+        input_filter: 'int'
+        disabled: True if all.active == True else False      
+    MDTextField:
+        id: box2
+        hint_text: "End"
+        mode: "rectangle"
+        color_mode: 'custom'
+        line_color_focus: 254/255, 190/255, 80/255, 1
+        input_filter: 'int'
+        disabled: True if all.active == True or single.active == True else False       
+    MDRaisedButton:
+        text: "Download"
+        pos_hint: {"center_x":0.5}
+        md_bg_color: 80/255, 193/255, 255/255, 1
+        on_release: app.screen_manager.get_screen("home").download(box1.text,box2.text,"Hero (Dub) Ep-01")
+<Loading>:
+    MDSpinner:
+        id: Load
+        size_hint: None, None
+        size: dp(46), dp(46)
+        pos_hint: {'center_x': .5, 'center_y': .5}
+        active: True 
+
+        palette:
+            [0.28627450980392155, 0.8431372549019608, 0.596078431372549, 1],             [0.3568627450980392, 0.3215686274509804, 0.8666666666666667, 1],             [0.8862745098039215, 0.36470588235294116, 0.592156862745098, 1],[0.8784313725490196, 0.9058823529411765, 0.40784313725490196, 1],
